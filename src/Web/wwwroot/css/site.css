@@ -1,35 +1,54 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+pre {
+    padding: 30px;
+    background-color: #eee;
+    max-width: 100%;
+    word-break: break-all;
+    overflow: auto;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+#log {
+    max-height: 200px;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+.navbar .nav-brand {
+    text-align: center;
     width: 100%;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+.navbar .nav-links {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    padding: 0;
+    gap: 1rem;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+.navbar {
+    display: flex;
+    flex-direction: column;
 }
+
+.btn {
+    all: unset;
+    display: block;
+    cursor: pointer;
+    padding: 0.5rem 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    background-color: #69699b;
+    color: #ffffff;
+}
+
+    .btn:hover {
+        border-color: #69699b;
+        background-color: #ffffff;
+        color: #69699b;
+    }

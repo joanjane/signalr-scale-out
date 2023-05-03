@@ -1,25 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Web;
 
-namespace Web
+const string SIGNALR_CORS_POLICY = "SIGNALR";
+var builder = WebApplication.CreateBuilder(args);
+
+var services = builder.Services;
+
+services.AddSignalR()
+    .AddStackExchangeRedis(builder.Configuration["Redis:ConnectionString"])
+    ;
+services.AddControllers();
+services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+
+services.AddCors(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+    options.AddPolicy(SIGNALR_CORS_POLICY,
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            //.AllowCredentials()
+            );
+});
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-    }
-}
+var app = builder.Build();
+app.UseDeveloperExceptionPage();
+
+app.UseCors(SIGNALR_CORS_POLICY);
+app.UseStaticFiles();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<TestHub>("/test");
+    endpoints.MapRazorPages();
+    endpoints.MapControllers();
+});
+
+app.Run();

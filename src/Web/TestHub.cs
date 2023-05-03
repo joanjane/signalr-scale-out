@@ -7,10 +7,6 @@ namespace Web
 {
     public class TestHub : Hub
     {
-        public TestHub(IHostingEnvironment environment)
-        {
-        }
-
         public override async Task OnConnectedAsync()
         {
             var connectionID = Context.ConnectionId;

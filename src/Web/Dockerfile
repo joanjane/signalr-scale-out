@@ -1,12 +1,15 @@
-FROM microsoft/aspnetcore:2.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY signalr-scale-out.sln ./
+COPY docker-compose.dcproj ./
 COPY Web/Web.csproj Web/
-RUN dotnet restore -nowarn:msb3202,nu1503
+
+RUN dotnet restore signalr-scale-out.sln
 COPY . .
 WORKDIR /src/Web
 RUN dotnet build -c Release -o /app
