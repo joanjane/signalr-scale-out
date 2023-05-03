@@ -3,7 +3,9 @@
 Example for scaling out signalr (asp.net 6) on multiple front-end servers using Redis as backplane. 
 This is a fork of [bremnes](https://github.com/bremnes/signalr-scale-out) repository, which simplifies setup and updates all dependencies.
 
-![](https://docs.microsoft.com/en-us/aspnet/signalr/overview/performance/scaleout-in-signalr/_static/image2.png)[source](https://docs.microsoft.com/en-us/aspnet/signalr/overview/performance/scaleout-in-signalr)
+![](https://docs.microsoft.com/en-us/aspnet/signalr/overview/performance/scaleout-in-signalr/_static/image2.png)
+
+[source](https://docs.microsoft.com/en-us/aspnet/signalr/overview/performance/scaleout-in-signalr)
 
 ## Usage:
 
