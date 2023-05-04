@@ -8,21 +8,44 @@ services:
       dockerfile: Web/Dockerfile
     environment:
       - Redis__ConnectionString=${Redis__ConnectionString:-redis:6379, abortConnect=false}
+      - Sql__ConnectionString=${Sql__ConnectionString:-Server=sqlserver;Database=master;User Id=sa;Password=Pass@word;Encrypt=False}
+      - SignalR__Backplane=${SignalR__Backplane:-redis}
       - ASPNETCORE_URLS=http://+:80
-      #- ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "3010:80"
+    depends_on:
+      - redis
+      - sqlserver
 
   web2:
     image: poc/signalr-scale-out-web
     environment:
       - Redis__ConnectionString=${Redis__ConnectionString:-redis:6379, abortConnect=false}
+      - Sql__ConnectionString=${Sql__ConnectionString:-Server=sqlserver;Database=master;User Id=sa;Password=Pass@word;Encrypt=False}
+      - SignalR__Backplane=${SignalR__Backplane:-redis}
       - ASPNETCORE_URLS=http://+:80
     ports:
       - "3011:80"
-
+    depends_on:
+      - redis
+      - sqlserver
+      
   redis:
     image: redis:7-alpine
     command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - ${SQL_PORT:-5533}:1433
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "Pass@word" -Q "SELECT 1" || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
